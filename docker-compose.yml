@@ -1,0 +1,24 @@
+version: '3'
+services:
+  fast-postgres:
+    image: "postgres:9.6-alpine"
+    container_name: fast-postgres
+    volumes:
+      - ./dump.sql:/docker-entrypoint-initdb.d/dump.sql
+      
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_DB=fast
+      - POSTGRES_USER=user
+      - POSTGRES_PASSWORD=password
+
+  fast-app:
+    build: ./app
+    container_name: fast-app
+    environment:
+      - DB_SERVER=fast-postgres
+    ports:
+      - 8080:8080
+    links:
+      - fast-postgres
