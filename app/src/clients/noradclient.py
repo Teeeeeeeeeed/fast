@@ -1,6 +1,8 @@
 from httpx import Client, HTTPError, Response
 from dotenv import dotenv_values
 
+from app.src.schema.norad import NoradResponse
+
 class NoradClient:
     def __init__(self) -> None:
         self.session = Client()
@@ -25,10 +27,10 @@ class NoradClient:
             )
         return res
 
-    async def searchTLE(self, norad_id:int):
+    async def searchTLE(self, norad_id:int) -> NoradResponse:
         url = f"/tle/{norad_id}&apiKey={self.api_key}"
         response = await self._perform_request("get", url)
-        return response.json()
+        return NoradResponse(**response.json())
      
     def __del__(self):
         self.session.close()
