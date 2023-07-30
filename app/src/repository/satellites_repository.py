@@ -16,6 +16,9 @@ class SatelliteRepository:
             satellite.id
         )
     
+    def getAll(self) -> List[Satellite]:
+        return self.__db.query(Satellite).all()
+    
     def create(self, satellite:Satellite) -> Satellite:
         self.__db.add(satellite)
         self.__db.commit()
@@ -31,5 +34,11 @@ class SatelliteRepository:
         self.__db.commit()
         self.__db.flush()
     
-    async def searchByNoradId(self, norad_id: int) -> Satellite:
+    def search_by_norad_id(self, norad_id: int) -> Satellite:
         return self.__db.query(Satellite).filter_by(norad_id=norad_id).first()
+    
+    def search_by_name(self, key: str) -> List[Satellite]:
+        return self.__db.query(Satellite).filter(Satellite.name.ilike("%{0}%".format(key))).all()
+    
+    def getById(self, id: int) -> Satellite:
+        return self.__db.query(Satellite).get(id)

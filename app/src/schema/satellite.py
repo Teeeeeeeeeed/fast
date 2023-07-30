@@ -1,10 +1,11 @@
+from typing import List
 from pydantic import BaseModel
 
 class SatelliteSchema(BaseModel):
     id: int
+    name: str
     norad_id: int
-    satellite_name: str
-    tle:str
+    hasTle: bool
 
-    class Config:
-        orm_mode = True
+class TrajectoryRequest(BaseModel):
+    ids: List[str]

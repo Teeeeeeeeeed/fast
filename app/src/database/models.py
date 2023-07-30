@@ -19,4 +19,3 @@ class Satellite(Base):
     def __repr__(self):
         return f"id:{self.id} satellite name:{self.name}"
     
-    
