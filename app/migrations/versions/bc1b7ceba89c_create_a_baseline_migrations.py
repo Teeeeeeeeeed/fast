@@ -1,8 +1,8 @@
 """Create a baseline migrations
 
-Revision ID: 9af80217dcd8
-Revises: 
-Create Date: 2023-07-12 23:04:40.101930
+Revision ID: bc1b7ceba89c
+Revises: 610eabef2503
+Create Date: 2023-08-01 00:39:24.320469
 
 """
 from alembic import op
@@ -10,8 +10,8 @@ import sqlalchemy as sa
 
 
 # revision identifiers, used by Alembic.
-revision = '9af80217dcd8'
-down_revision = None
+revision = 'bc1b7ceba89c'
+down_revision = '610eabef2503'
 branch_labels = None
 depends_on = None
 
@@ -21,12 +21,12 @@ def upgrade() -> None:
     op.create_table('satellites',
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('name', sa.String(length=60), nullable=True),
-    sa.Column('norad_id', sa.Integer(), nullable=True),
     sa.Column('transaction_count', sa.String(length=200), nullable=True),
+    sa.Column('norad_id', sa.Integer(), nullable=True),
     sa.Column('tle', sa.String(length=200), nullable=True),
     sa.Column('create_at', sa.DateTime(), nullable=True),
     sa.PrimaryKeyConstraint('id'),
-    sa.UniqueConstraint('name')
+    sa.UniqueConstraint('norad_id')
     )
     # ### end Alembic commands ###
 

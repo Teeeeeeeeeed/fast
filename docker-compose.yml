@@ -10,8 +10,8 @@ services:
       - 5432:5432
     environment:
       - POSTGRES_DB=fast
-      - POSTGRES_USER=user
-      - POSTGRES_PASSWORD=password
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=Yh6mbso48ueobV1yvROh
 
   fast-app:
     build: ./app

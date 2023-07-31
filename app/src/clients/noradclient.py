@@ -1,15 +1,20 @@
+import os
 from httpx import Client, HTTPError, Response
-from dotenv import dotenv_values
+from dotenv import dotenv_values, load_dotenv
 
 from app.src.schema.norad import NoradResponse
+
+load_dotenv()
+
+NORAD_API_KEY = os.environ.get("NORAD_API_KEY")
+NORAD_API_URL = os.environ.get("NORAD_API_URL")
 
 class NoradClient:
     def __init__(self) -> None:
         self.session = Client()
         self.session.headers.update({"Content-Type": "application/json"})
-        env_variables = dotenv_values(".env")
-        self.api_key = env_variables["NORAD_API_KEY"]
-        self.base_url = env_variables["NORAD_API_URL"]
+        self.api_key = NORAD_API_KEY
+        self.base_url = NORAD_API_URL
 
     async def _perform_request(self, method: str, path: str, *args, **kwargs) -> Response:
         res = None

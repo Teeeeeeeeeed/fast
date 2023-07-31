@@ -1,10 +1,12 @@
+import os
 from sqlalchemy import create_engine
-from dotenv import dotenv_values
+from dotenv import dotenv_values, load_dotenv
 from sqlalchemy.orm import sessionmaker, scoped_session
 
-env = dotenv_values(".env")
-SQLALCHEMY_DATABASE_URL = env['SQLALCHEMY_DATABASE_URL']
-engine = create_engine(SQLALCHEMY_DATABASE_URL, echo=True)
+load_dotenv()
+
+db_url = os.environ.get("SQLALCHEMY_DATABASE_URL")
+engine = create_engine(db_url, echo=True)
 LocalSession = sessionmaker(
     autocommit=False,
     autoflush=False,
