@@ -1,8 +1,6 @@
-import asyncio
 import uvicorn
-from fastapi import BackgroundTasks, FastAPI
+from fastapi import FastAPI
 
-from app.src.services.position_stream_manager import stream_manager
 from .src.routers import controllers
 from fastapi.middleware.cors import CORSMiddleware
 
