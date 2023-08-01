@@ -1,8 +1,8 @@
 import json
-from fastapi import APIRouter, BackgroundTasks, Depends, WebSocket, WebSocketDisconnect
-from app.src.schema.satellite import TrajectoryRequest
-from app.src.services.position_stream_manager import PositionStream, PositionStreamManager
-from app.src.services.satellite_service import SatelliteService
+from fastapi import APIRouter, Depends, WebSocket, WebSocketDisconnect
+from src.schema.satellite import TrajectoryRequest
+from src.services.position_stream_manager import PositionStream, PositionStreamManager
+from src.services.satellite_service import SatelliteService
 
 position_router = APIRouter(tags=["Positions"], prefix="/positions")
 

@@ -1,7 +1,7 @@
-from typing import List, Optional
+from typing import List 
 from fastapi import Depends
-from app.src.database.db import get_db_connection
-from app.src.database.models import Satellite
+from src.database.db import get_db_connection
+from src.database.models import Satellite
 from sqlalchemy.orm import Session
 
 class SatelliteRepository:

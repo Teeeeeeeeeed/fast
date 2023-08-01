@@ -2,7 +2,7 @@ import os
 from httpx import Client, HTTPError, Response
 from dotenv import dotenv_values, load_dotenv
 
-from app.src.schema.norad import NoradResponse
+from src.schema.norad import NoradResponse
 
 load_dotenv()
 

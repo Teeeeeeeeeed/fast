@@ -1,10 +1,10 @@
 import datetime
 from typing import List
-from fastapi import Depends, HTTPException
-from app.src.database.models import Satellite
+from fastapi import Depends
+from src.database.models import Satellite
 
-from app.src.repository.satellites_repository import SatelliteRepository
-from app.src.schema.satellite import SatelliteSchema
+from src.repository.satellites_repository import SatelliteRepository
+from src.schema.satellite import SatelliteSchema
 
 from ..clients.noradclient import NoradClient, get_norad_client
 from skyfield.api import EarthSatellite

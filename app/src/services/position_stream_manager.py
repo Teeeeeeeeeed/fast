@@ -1,8 +1,8 @@
 from typing import List
 from fastapi import Depends, FastAPI, WebSocket
-from app.src.database.models import Satellite
+from src.database.models import Satellite
 
-from app.src.services.satellite_service import SatelliteService
+from src.services.satellite_service import SatelliteService
 
 app = FastAPI()
 
