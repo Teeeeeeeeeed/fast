@@ -1,5 +1,6 @@
 import json
 from fastapi import APIRouter, Depends, WebSocket, WebSocketDisconnect
+from src.database.db import get_db_connection
 from src.schema.satellite import TrajectoryRequest
 from src.services.position_stream_manager import PositionStream, PositionStreamManager
 from src.services.satellite_service import SatelliteService
@@ -22,5 +23,9 @@ async def get_position(client_id:str, websocket: WebSocket, connectionManager: P
         websocket.close()
 
 @position_router.post("/positions/get-trajectories")
-async def get_trajectory(body: TrajectoryRequest, satelliteService: SatelliteService = Depends()):
-    return satelliteService.get_trajectories(body.ids)
+async def get_trajectory(body: TrajectoryRequest, session = Depends(get_db_connection), satelliteService: SatelliteService = Depends()):
+    return satelliteService.get_trajectories(body.ids, session)
+
+@position_router.post("/positions/get-position-stream")
+async def get_position(body: TrajectoryRequest, session = Depends(get_db_connection), satelliteService: SatelliteService = Depends()):
+    return satelliteService.get_positions(body.ids, session)

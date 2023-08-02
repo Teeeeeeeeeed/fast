@@ -1,7 +1,10 @@
 import datetime
 from typing import List
 from fastapi import Depends
+from src.repository.satellites_repository import get_satellite_repository
+from src.repository import satellites_repository
 from src.database.models import Satellite
+from sqlalchemy.orm import scoped_session
 
 from src.repository.satellites_repository import SatelliteRepository
 from src.schema.satellite import SatelliteSchema
@@ -24,10 +27,10 @@ class SatelliteService:
         self.satelliteRepo = satelliteRepository
         self.noradClient = noradClient
     
-    async def searchByNoradID(self, id:int) -> List[SatelliteSchema]:
+    async def searchByNoradID(self, id:int, session: scoped_session) -> List[SatelliteSchema]:
         if (not isinstance(id, int)):
             return []
-        exists = self.satelliteRepo.search_by_norad_id(id)
+        exists = self.satelliteRepo.search_by_norad_id(id, session)
         if (exists):
             exists = [exists]
         else:
@@ -37,13 +40,13 @@ class SatelliteService:
                     name=new_search.info.satname,
                     norad_id=new_search.info.satid,
                     tle=new_search.tle
-                ))
-                newSatellite = self.satelliteRepo.search_by_norad_id(new_search.info.satid)
+                ), session)
+                newSatellite = self.satelliteRepo.search_by_norad_id(new_search.info.satid, session)
             exists = [newSatellite]
         return list(map(self.satellite_to_metadata, exists))
     
-    def search_satellites(self, key: str) -> List[SatelliteSchema]:
-        s = self.satelliteRepo.search_by_name(key)
+    def search_satellites(self, key: str, session: scoped_session) -> List[SatelliteSchema]:
+        s = self.satelliteRepo.search_by_name(key, session)
         return list(map(self.satellite_to_metadata,s))
     
     def get_all(self):
@@ -90,14 +93,14 @@ class SatelliteService:
         )
         return map
     
-    def get_positions(self, satellites:List[int]):
-        satellite_data = [self.satelliteRepo.getById(id) for id in satellites]
+    def get_positions(self, satellites:List[int], sesssion: scoped_session):
+        satellite_data = [ self.satelliteRepo.getById(id, sesssion) for id in satellites]
         satellite_position = { satellite.id: self.get_position(satellite) for satellite in satellite_data }
 
         return satellite_position
     
-    def get_trajectories(self, satellites:List[int]):
-        satellite_data = [self.satelliteRepo.getById(id) for id in satellites]
+    def get_trajectories(self, satellites:List[int],session: scoped_session):
+        satellite_data = [self.satelliteRepo.getById(id, session) for id in satellites]
         satellite_trajectory = { satellite.id: self.get_position_range(satellite) for satellite in satellite_data }
 
         return satellite_trajectory
