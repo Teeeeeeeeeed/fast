@@ -6,7 +6,7 @@ from src.services.satellite_service import SatelliteService
 
 position_router = APIRouter(tags=["Positions"], prefix="/positions")
 
-@position_router.websocket("/get-position-stream/{client_id}")
+@position_router.websocket("/ws/get-position-stream/{client_id}")
 async def get_position(client_id:str, websocket: WebSocket, connectionManager: PositionStreamManager = Depends()):
     await websocket.accept()
     connectionManager.set_client(client_id, PositionStream(websocket, []))
