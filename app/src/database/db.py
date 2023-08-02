@@ -6,7 +6,7 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 load_dotenv()
 
 db_url = os.environ.get("SQLALCHEMY_DATABASE_URL")
-engine = create_engine(db_url, echo=True)
+engine = create_engine(db_url, echo=True,pool_size=75, max_overflow=0)
 LocalSession = sessionmaker(
     autocommit=False,
     autoflush=False,
