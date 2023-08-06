@@ -7,7 +7,7 @@ from src.services.satellite_service import SatelliteService
 
 position_router = APIRouter(tags=["Positions"])
 
-@position_router.websocket("/ws/positions/get-position-stream/{client_id}")
+@position_router.websocket("/api/ws/positions/get-position-stream/{client_id}")
 async def get_position(client_id:str, websocket: WebSocket, connectionManager: PositionStreamManager = Depends()):
     await websocket.accept()
     connectionManager.set_client(client_id, PositionStream(websocket, []))
@@ -22,10 +22,10 @@ async def get_position(client_id:str, websocket: WebSocket, connectionManager: P
         connectionManager.del_client(client_id)
         websocket.close()
 
-@position_router.post("/positions/get-trajectories")
+@position_router.post("/api/positions/get-trajectories")
 async def get_trajectory(body: TrajectoryRequest, session = Depends(get_db_connection), satelliteService: SatelliteService = Depends()):
     return satelliteService.get_trajectories(body.ids, session)
 
-@position_router.post("/positions/get-position-stream")
+@position_router.post("/api/positions/get-position-stream")
 async def get_position(body: TrajectoryRequest, session = Depends(get_db_connection), satelliteService: SatelliteService = Depends()):
     return satelliteService.get_positions(body.ids, session)
